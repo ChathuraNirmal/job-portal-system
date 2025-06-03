@@ -11,9 +11,9 @@ public class JobDto {
 
     private Long id;
     private String title;
-    private String discription;
+    private String description;
     private Double salary;
     private String salaryDate;
-
+    private Long companyId;
 
 }

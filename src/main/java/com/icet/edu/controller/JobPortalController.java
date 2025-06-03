@@ -2,38 +2,37 @@ package com.icet.edu.controller;
 
 import com.icet.edu.model.dto.CompanyDto;
 import com.icet.edu.model.dto.JobDto;
-import com.icet.edu.service.ServiceFactory;
-import com.icet.edu.service.custom.CompanyService;
-import com.icet.edu.service.custom.JobService;
-import com.icet.edu.util.ServiceType;
+import com.icet.edu.service.CompanyService;
+import com.icet.edu.service.JobService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RequiredArgsConstructor
+@CrossOrigin
 @RestController
+@RequiredArgsConstructor
 public class JobPortalController {
 
-    CompanyService companyService = ServiceFactory.getInstance().getServices(ServiceType.COMPANY);
-    JobService jobService = ServiceFactory.getInstance().getServices(ServiceType.JOB);
+    private final CompanyService companyService;
+    private final JobService jobService;
 
     @PostMapping("/set-company")
-    boolean addCompany(@RequestBody CompanyDto companyDto) {
+    void addCompany(@RequestBody CompanyDto companyDto) {
 
-        return companyService.save(companyDto);
+         companyService.save(companyDto);
 
     }
 
     @PostMapping("/set-job")
-    boolean addJob(@RequestBody JobDto jobDto) {
+    void addJob(@RequestBody JobDto jobDto) {
 
-        return jobService.save(jobDto);
+         jobService.save(jobDto);
 
     }
 
     @GetMapping("getAll-companies")
-    List<CompanyDto> getAllCompanies() {
+    public List<CompanyDto> getAllCompanies() {
 
         return companyService.getAll();
 
@@ -42,23 +41,22 @@ public class JobPortalController {
     @GetMapping("getAll-jobs")
     List<JobDto> getAllJobs() {
 
+        System.out.println(jobService.getAll());
         return jobService.getAll();
 
     }
 
     @DeleteMapping("/{company-name}")
-    boolean deleteCompany(Long id) {
+    void deleteCompany(Long id) {
 
-        return companyService.delete(id);
+         companyService.delete(id);
 
     }
 
     @DeleteMapping("/{job-name}")
-    boolean deleteJob(Long id) {
+    void deleteJob(Long id) {
 
-        return jobService.delete(id);
+         jobService.delete(id);
 
     }
-
-
 }

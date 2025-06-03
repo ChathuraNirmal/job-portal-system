@@ -1,25 +1,29 @@
-package com.icet.edu.service.custom.impl;
+package com.icet.edu.service;
 
 import com.icet.edu.model.dao.JobDao;
 import com.icet.edu.model.dto.JobDto;
-import com.icet.edu.repository.custom.JobRepository;
-import com.icet.edu.service.custom.JobService;
+import com.icet.edu.repository.JobRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
+@Service
 @RequiredArgsConstructor
-public class JobServiceImpl implements JobService {
+public class JobService {
 
     ModelMapper modelMapper = new ModelMapper();
-    private JobRepository jobRepository;
+    private final JobRepository jobRepository;
 
-    @Override
+
     public Boolean save(JobDto jobDto) {
 
         try {
+            System.out.println(jobDto);
             jobRepository.save(modelMapper.map(jobDto, JobDao.class));
 
         } catch (Exception e) {
@@ -30,7 +34,7 @@ public class JobServiceImpl implements JobService {
         return true;
     }
 
-    @Override
+
     public Boolean delete(Long id) {
 
 
@@ -45,24 +49,16 @@ public class JobServiceImpl implements JobService {
 
     }
 
-    @Override
+
     public JobDto searchByID(Long id) {
         return modelMapper.map(jobRepository.findById(id), JobDto.class);
     }
 
-    @Override
+
     public List<JobDto> getAll() {
 
-        List<JobDto> jobDtos = new ArrayList<>();
+        return jobRepository.findAll().stream().map(jobDao -> modelMapper.map(jobDao, JobDto.class)).collect(Collectors.toList());
 
-        jobRepository.findAll().forEach(each -> {
-
-            jobDtos.add(modelMapper.map(each, JobDto.class));
-
-        });
-
-
-        return jobDtos;
     }
 
 

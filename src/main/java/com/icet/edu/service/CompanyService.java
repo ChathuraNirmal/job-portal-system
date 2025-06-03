@@ -1,21 +1,22 @@
-package com.icet.edu.service.custom.impl;
+package com.icet.edu.service;
 
 import com.icet.edu.model.dao.CompanyDao;
 import com.icet.edu.model.dto.CompanyDto;
-import com.icet.edu.repository.custom.CompanyRepository;
-import com.icet.edu.service.custom.CompanyService;
+import com.icet.edu.repository.CompanyRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
+@Service
 @RequiredArgsConstructor
-public class CompanyServiceImpl implements CompanyService {
+public class CompanyService {
     ModelMapper modelMapper = new ModelMapper();
-    private CompanyRepository companyRepository;
+    private final CompanyRepository companyRepository;
 
-    @Override
+
     public Boolean save(CompanyDto companyDto) {
 
         try {
@@ -29,7 +30,7 @@ public class CompanyServiceImpl implements CompanyService {
         return true;
     }
 
-    @Override
+
     public Boolean delete(Long id) {
 
 
@@ -44,24 +45,16 @@ public class CompanyServiceImpl implements CompanyService {
 
     }
 
-    @Override
+
     public CompanyDto searchByID(Long id) {
         return modelMapper.map(companyRepository.findById(id), CompanyDto.class);
     }
 
-    @Override
+
     public List<CompanyDto> getAll() {
 
-        List<CompanyDto> companyDtos = new ArrayList<>();
+        return companyRepository.findAll().stream().map(companyDao -> modelMapper.map(companyDao,CompanyDto.class)).collect(Collectors.toList());
 
-        companyRepository.findAll().forEach(each -> {
-
-            companyDtos.add(modelMapper.map(each, CompanyDto.class));
-
-        });
-
-
-        return companyDtos;
     }
 
 }
