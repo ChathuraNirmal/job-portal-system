@@ -2,4 +2,4 @@ spring:
   datasource:
     username : root
     password : 2007
-    url : jdbc:mysql://localhost:3307/tech_blog
+    url : jdbc:mysql://localhost:3307/job_portal

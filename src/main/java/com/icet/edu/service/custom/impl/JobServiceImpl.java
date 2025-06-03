@@ -2,10 +2,13 @@ package com.icet.edu.service.custom.impl;
 
 import com.icet.edu.model.dao.JobDao;
 import com.icet.edu.model.dto.JobDto;
-import com.icet.edu.repository.JobRepository;
+import com.icet.edu.repository.custom.JobRepository;
 import com.icet.edu.service.custom.JobService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RequiredArgsConstructor
 public class JobServiceImpl implements JobService {
@@ -14,7 +17,7 @@ public class JobServiceImpl implements JobService {
     private JobRepository jobRepository;
 
     @Override
-    public Boolean add(JobDto jobDto) {
+    public Boolean save(JobDto jobDto) {
 
         try {
             jobRepository.save(modelMapper.map(jobDto, JobDao.class));
@@ -28,7 +31,7 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
-    public Boolean remove(Long id) {
+    public Boolean delete(Long id) {
 
 
         try {
@@ -44,7 +47,22 @@ public class JobServiceImpl implements JobService {
 
     @Override
     public JobDto searchByID(Long id) {
-        return modelMapper.map(jobRepository.findById(id),JobDto.class);
+        return modelMapper.map(jobRepository.findById(id), JobDto.class);
+    }
+
+    @Override
+    public List<JobDto> getAll() {
+
+        List<JobDto> jobDtos = new ArrayList<>();
+
+        jobRepository.findAll().forEach(each -> {
+
+            jobDtos.add(modelMapper.map(each, JobDto.class));
+
+        });
+
+
+        return jobDtos;
     }
 
 
